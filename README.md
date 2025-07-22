@@ -2,9 +2,9 @@
 
 Stayzaa is a full-stack web application inspired by Airbnb, built with **Node.js**, **Express**, **MongoDB**, and **Bootstrap**. It allows users to **list properties**, **review listings**, and **book stays** in a simplified and visually appealing interface.
 
-![Stayzaa Banner](./public/images/banner.png) <!-- Optional: Add your image -->
 
----
+
+---c:\Users\mugdha zope\OneDrive\Pictures\Screenshots\Screenshot 2025-07-22 175644.png
 
 ## 🚀 Features
 
@@ -33,10 +33,11 @@ Stayzaa is a full-stack web application inspired by Airbnb, built with **Node.js
 
 ## 📸 Screenshots
 
-<!-- You can replace these with your own images -->
-![Home Page](./public/images/screenshot-home.png)
-![Add Listing](./public/images/screenshot-add.png)
-![Login Page](./public/images/screenshot-login.png)
+![Home page](<Screenshot 2025-07-22 175644.png>)
+![login page](<Screenshot 2025-07-22 180616.png>)
+![listing](<Screenshot 2025-07-22 180514.png>)
+![map feature](<Screenshot 2025-07-22 180558.png>)
+![New listing](<Screenshot 2025-07-22 180459.png>)
 
 ---
 
