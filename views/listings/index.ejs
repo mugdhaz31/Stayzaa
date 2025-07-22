@@ -1,0 +1,110 @@
+<% layout("layouts/boilerplate") %>
+
+  <body class="bg-light">
+    <div class="container mt-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h3 class="fw-semibold">All Listings</h3>
+        <a href="/listings/new" class="btn btn-outline-dark">Create New Listing</a>
+      </div>
+      <% let currentCategory=typeof category !=='undefined' ? category : null; %>
+
+        <div class="container-fluid border-bottom pb-3 mb-4 px-3">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-4">
+            <div class="d-none d-md-flex gap-4 overflow-auto pb-2 mb-2 mb-md-0"
+              style="white-space: nowrap; scrollbar-width: thin; flex-grow: 1;">
+              <% const categories=[ { name: 'Farms' , icon: 'fa-tractor' }, { name: 'Rooms' , icon: 'fa-door-open' }, {
+                name: 'Amazing views' , icon: 'fa-mountain-sun' }, { name: 'Iconic cities' , icon: 'fa-city' }, {
+                name: 'Surfing' , icon: 'fa-water' }, { name: 'Amazing pools' , icon: 'fa-person-swimming' }, {
+                name: 'Beach' , icon: 'fa-umbrella-beach' }, { name: 'Cabins' , icon: 'fa-campground' }, { name: 'OMG!'
+                , icon: 'fa-face-surprise' }, { name: 'Lakefront' , icon: 'fa-water' } ]; %>
+                <% for (let cat of categories) { const isActive=currentCategory===cat.name; %>
+                  <a href="/listings?category=<%= cat.name %>" class="text-center text-decoration-none"
+                    style="min-width: 80px;">
+                    <div class="fs-5 mb-1">
+                      <i class="fa-solid <%= cat.icon %> <%= isActive ? 'text-dark' : 'text-secondary' %>"></i>
+                    </div>
+                    <div class="small <%= isActive ? 'fw-semibold text-dark' : 'text-secondary' %>">
+                      <%= cat.name %>
+                    </div>
+                  </a>
+                  <% } %>
+            </div>
+
+            <div class="d-flex justify-content-center justify-content-md-end align-items-center gap-3 flex-shrink-0">
+              <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#filtersOffcanvas">
+                <i class="fa-solid fa-sliders"></i> Filters
+              </button>
+              <div class="form-check form-switch">
+                <input class="form-check-input" type="checkbox" id="toggleTax" />
+                <label class="form-check-label small" for="toggleTax">
+                  Display total before taxes
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="filtersOffcanvas"
+          aria-labelledby="filtersOffcanvasLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="filtersOffcanvasLabel">Filters</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <div class="d-flex flex-column gap-3">
+              <% for (let cat of categories) { const isActive=currentCategory===cat.name; %>
+                <a href="/listings?category=<%= cat.name %>" class="text-decoration-none">
+                  <div class="<%= isActive ? 'fw-semibold text-dark' : 'text-secondary' %>">
+                    <i class="fa-solid <%= cat.icon %> me-2"></i>
+                    <%= cat.name %>
+                  </div>
+                </a>
+                <% } %>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="row gy-4">
+          <% for (let listing of allListings) { %>
+            <div class="col-sm-6 col-md-4">
+              <div class="card border-0 shadow-sm listing-card">
+                <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+                  <img src="<%= listing.image.url %>" class="card-img-top" alt="Listing Image">
+                  <div class="card-body px-3">
+                    <h6 class="fw-semibold mb-1">
+                      <%= listing.title %>
+                    </h6>
+                    <div class="d-flex justify-content-between mb-1">
+                      <p class="fw-semibold mb-0">₹<%= listing.price.toLocaleString("en-IN") %>
+                          <span class="text-muted fw-normal">/ night</span>
+                          <span class="tax-info text-muted fst-italic d-none"> +18% GST</span>
+                      </p>
+                      <small><i class="fa-solid fa-star text-warning"></i>
+                        <%= listing.avgRating %>
+                      </small>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+            <% } %>
+        </div>
+    </div>
+    <script>
+      const taxSwitch = document.getElementById("toggleTax");
+
+      taxSwitch.addEventListener("click", () => {
+        const taxInfos = document.getElementsByClassName("tax-info");
+        for (let info of taxInfos) {
+          if (taxSwitch.checked) {
+            info.classList.remove("d-none");
+          } else {
+            info.classList.add("d-none");
+          }
+        }
+      });
+    </script>
+
+  </body>

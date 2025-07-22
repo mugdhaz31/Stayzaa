@@ -1,0 +1,16 @@
+<% layout("layouts/boilerplate") %>
+
+<body class="bg-light d-flex align-items-center justify-content-center" style="min-height: 100vh;">
+  <div class="container text-center m-3">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="alert alert-danger shadow-lg" role="alert">
+          <h1 class="alert-heading display-5">Error <%= statusCode || 500 %></h1>
+          <p class="mb-3"><%= message || "Something went wrong. Please try again later." %></p>
+          <hr>
+          <a href="/listings" class="btn btn-dark">Go Back to Listings</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>

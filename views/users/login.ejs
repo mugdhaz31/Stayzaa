@@ -1,0 +1,30 @@
+<% layout("layouts/boilerplate") %>
+
+  <div class="container mt-5" style="max-width: 500px;">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h3 class="mb-4 text-center">Login to Your Account</h3>
+
+        <form action="/login" method="POST" novalidate>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username or Email</label>
+            <input type="text" class="form-control" name="username" id="username" required>
+          </div>
+
+          <div class="mb-3">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" name="password" id="password" required>
+          </div>
+
+          <button type="submit" class="btn btn-submit w-100">
+            <i class="fa-solid fa-right-to-bracket"></i> Login
+          </button>
+
+        </form>
+
+        <p class="text-muted text-center mt-3">
+          Don’t have an account? <a href="/signup">Register here</a>
+        </p>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,114 @@
+
+
+</body><nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top border-bottom py-3">
+  <div class="container-fluid px-4">
+
+    <!-- Brand -->
+    <a class="navbar-brand fw-bold d-flex align-items-center gap-2" href="/listings" style="color: #FF5A5F;">
+      <i class="fa-solid fa-location-arrow"></i> Stayzaa
+    </a>
+
+    <!-- Spacer pushes toggler & account to the right -->
+    <div class="d-flex align-items-center ms-auto">
+
+      <!-- Account/Login (outside toggler, always visible) -->
+      <li class="nav-item dropdown list-unstyled d-lg-none">
+        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 px-3 py-2 border rounded-pill" href="#"
+          id="userDropdownMobile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa-regular fa-circle-user fs-5 text-secondary"></i>
+          <% if (currentUser) { %>
+            <%= currentUser.username %>
+              <% } else { %> Account <% } %>
+        </a>
+        <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="userDropdownMobile">
+          <% if (!currentUser) { %>
+            <li><a class="dropdown-item" href="/login">Login</a></li>
+            <li><a class="dropdown-item" href="/signup">Sign Up</a></li>
+            <% } else { %>
+              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+              <% } %>
+        </ul>
+      </li>
+
+      <!-- Toggler (now placed at right) -->
+      <button class="navbar-toggler ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="collapse navbar-collapse" id="navbarContent">
+
+      <!-- Search Bar Large Screens -->
+      <form id="searchFormDesktop" class="d-none d-lg-flex mx-auto align-items-center border rounded-pill shadow-sm px-3"
+        style="max-width: 500px; width: 100%;">
+        <input type="text" id="desktopSearchInput" class="form-control border-0" placeholder="Search destinations..."
+          style="box-shadow: none;" />
+        <button class="btn btn-sm text-white rounded-circle" type="submit" style="background-color: #FF5A5F;">
+          <i class="fa-solid fa-search"></i>
+        </button>
+      </form>
+
+      <!-- Search Bar Small Screens -->
+      <form id="searchFormMobile" class="d-flex d-lg-none mt-3 w-100 align-items-center border rounded-pill shadow-sm px-2"
+        style="max-width: 100%;">
+        <input type="text" id="mobileSearchInput" class="form-control border-0 py-1" placeholder="Search"
+          style="font-size: 0.875rem;" />
+        <button class="btn btn-sm text-white rounded-circle" type="submit" style="background-color: #FF5A5F;">
+          <i class="fa-solid fa-search"></i>
+        </button>
+      </form>
+
+      <!-- Nav Links -->
+      <ul class="navbar-nav ms-auto align-items-center gap-2 mt-3 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="/listings">Explore</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link fw-semibold" href="/listings/new">Add Listing</a>
+        </li>
+
+        <!-- Account/Login (for large screens only) -->
+        <li class="nav-item dropdown d-none d-lg-block">
+          <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 px-3 py-2 border rounded-pill" href="#"
+            id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="fa-regular fa-circle-user fs-5 text-secondary"></i>
+            <% if (currentUser) { %>
+              <%= currentUser.username %>
+                <% } else { %> Account <% } %>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end mt-2" aria-labelledby="userDropdown">
+            <% if (!currentUser) { %>
+              <li><a class="dropdown-item" href="/login">Login</a></li>
+              <li><a class="dropdown-item" href="/signup">Sign Up</a></li>
+              <% } else { %>
+                <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                <% } %>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<script>
+  // Desktop search functionality
+  document.getElementById("searchFormDesktop").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const query = document.getElementById("desktopSearchInput").value.trim();
+    if (query) {
+      window.location.href = `/listings/search?q=${encodeURIComponent(query)}`;
+    }
+  });
+
+  // Mobile search functionality
+  document.getElementById("searchFormMobile").addEventListener("submit", function (e) {
+    e.preventDefault();
+    const query = document.getElementById("mobileSearchInput").value.trim();
+    if (query) {
+      window.location.href = `/listings/search?q=${encodeURIComponent(query)}`;
+    }
+  });
+</script>
+</body>

@@ -1,0 +1,64 @@
+<% layout("layouts/boilerplate") %>
+<body class="bg-light">
+  <div class="listing-form-container bg-white">
+  <h3>Create a New Listing</h3>
+  <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+    <div class="mb-3">
+      <label class="form-label">Title</label>
+      <input type="text" name="listing[title]" class="form-control" placeholder="e.g. Cozy Cottage in the Hills" required />
+      <div class="invalid-feedback">Title is required.</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Description</label>
+      <textarea name="listing[description]" class="form-control" rows="4" placeholder="Description....." required></textarea>
+      <div class="invalid-feedback">Please enter a description.</div>
+    </div>
+
+    <div class="mb-3">
+      <label class="form-label">Upload Listing Image</label>
+      <input type="file" name="listing[image][url]" class="form-control" placeholder="https://example.com/image.jpg" />
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Price (₹)</label>
+        <input type="number" name="listing[price]" class="form-control" placeholder="1000" required />
+        <div class="invalid-feedback">Enter a valid price.</div>
+      </div>
+      <div class="col-md-6 mb-3">
+    <label class="form-label">Category</label>
+    <select name="listing[category]" class="form-select" required>
+      <option disabled selected>Select a Category</option>
+      <option value="Farms">Farms</option>
+      <option value="Rooms">Rooms</option>
+      <option value="Amazing views">Amazing views</option>
+      <option value="Iconic cities">Iconic cities</option>
+      <option value="Surfing">Surfing</option>
+      <option value="Amazing pools">Amazing pools</option>
+      <option value="Beach">Beach</option>
+      <option value="Cabins">Cabins</option>
+      <option value="OMG!">OMG!</option>
+      <option value="Lakefront">Lakefront</option>
+    </select>
+    <div class="invalid-feedback">Please select a valid category.</div>
+  </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Country</label>
+        <input type="text" name="listing[country]" class="form-control"  placeholder="India" required />
+        <div class="invalid-feedback">Country is required.</div>
+      </div>
+      <div class="col-md-6 mb-3">
+        <label class="form-label">Location</label>
+        <input type="text" name="listing[location]" class="form-control"  placeholder="Mumbai" required />
+        <div class="invalid-feedback">Location is required.</div>
+      </div>
+    </div>
+
+    <button type="submit" class="btn btn-submit w-100 mt-3">Create Listing</button>
+  </form>
+</div>
+</body>

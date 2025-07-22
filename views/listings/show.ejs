@@ -1,0 +1,212 @@
+<% layout("layouts/boilerplate") %>
+
+  <body>
+    <div class="container my-5">
+      <div class="row">
+        <div class="col-md-6 mb-4" style="min-height: 100%;">
+          <div class="h-100">
+            <img src="<%= listing.image.url %>" class="img-fluid rounded shadow-sm h-500 w-100" alt="Listing Image"
+              style="object-fit: cover;">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="d-flex justify-content-between align-items-center mb-3 flex-nowrap">
+            <h3 class="fw-bold mb-0 me-3 flex-grow-1 text-truncate" style="max-width: 60%;" data-bs-toggle="tooltip"
+              data-bs-placement="top" title="<%= listing.title %>">
+              <%= listing.title %>
+            </h3>
+
+            <div class="d-flex align-items-center mt-2 mt-md-0">
+              <img
+                src="https://ui-avatars.com/api/?name=<%= listing.Owner.username %>&background=0D8ABC&color=fff&size=64"
+                alt="Owner Avatar" class="rounded-circle me-2" style="width: 48px; height: 48px; object-fit: cover;">
+              <div>
+                <div class="fw-bold">Hosted by <%= listing.Owner.username %>
+                </div>
+                <small class="text-muted">
+                  <%= listing.Owner.email %>
+                </small>
+              </div>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center mb-2">
+            <i class="fa-solid fa-location-dot me-2 text-danger"></i>
+            <span class="text-muted">
+              <%= listing.location %>, <%= listing.country %>
+            </span>
+          </div>
+
+          <div class="mb-3">
+            <i class="fa-solid fa-star text-warning"></i>
+            <%= avgRating ? avgRating : "No ratings yet" %> •
+              <span class="text-muted">Hosted in <%= listing.location %></span>
+          </div>
+
+          <p class="lead text-muted">
+            <%= listing.description %>
+          </p>
+
+          <h5 class="fw-semibold mt-4">
+            ₹<%= listing.price.toLocaleString("en-IN") %> <small class="text-muted fw-normal">/ night</small>
+          </h5>
+
+          <% if(currentUser && listing.Owner._id.equals(currentUser._id)){ %>
+            <div class="mt-4">
+              <a href="/listings/<%= listing._id %>/edit" class="btn btn-outline-dark me-2">
+                <i class="fa-solid fa-pen-to-square"></i> Edit
+              </a>
+              <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" class="d-inline">
+                <button class="btn btn-outline-danger">
+                  <i class="fa-solid fa-trash-can"></i> Delete
+                </button>
+              </form>
+            </div>
+            <% } %>
+
+              <div class="card mt-5 shadow-sm">
+                <div class="card-body">
+                  <% if(currentUser) { %>
+                    <h5 class="card-title mb-3">Leave a Review</h5>
+                    <form method="POST" action="/listings/<%= listing._id %>/reviews" novalidate
+                      class="needs-validation">
+                      <div class="mb-3">
+                        <label for="comment" class="form-label text-muted">Your Review</label>
+                        <textarea name="review[comment]" id="comment" class="form-control" rows="5"
+                          placeholder="Share your experience..." required></textarea>
+                        <div class="invalid-feedback">Please add some comments for review.</div>
+                      </div>
+
+                      <input type="hidden" name="review[rating]" id="rating" required />
+
+                      <label class="form-label text-muted d-block">Rating</label>
+                      <div id="star-rating" class="mb-2">
+                        <% for (let i=1; i <=5; i++) { %>
+                          <i class="fa-regular fa-star star" data-value="<%= i %>"></i>
+                          <% } %>
+                      </div>
+                      <div id="rating-feedback" class="invalid-feedback text-danger" style="display: none;">
+                        Please select a rating.
+                      </div>
+
+                      <button class="btn btn-review-submit" type="submit">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Review
+                      </button>
+                    </form>
+                    <% } else { %>
+                      <div class="alert alert-warning mt-3">
+                        <i class="fa-solid fa-circle-info me-2"></i>
+                        Please <a href="/login" class="alert-link">log in</a> to leave a review.
+                      </div>
+                      <% } %>
+                </div>
+              </div>
+        </div>
+      </div>
+
+      <% if (listing.reviews && listing.reviews.length> 0) { %>
+        <div class="mt-5">
+          <h4 class="fw-bold mb-3">What others are saying</h4>
+          <% listing.reviews.forEach((review)=> { %>
+            <div class="card mb-3 shadow-sm border-0">
+              <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div class="d-flex align-items-center mb-2">
+                    <% for (let i=1; i <=5; i++) { %>
+                      <% if (i <=review.rating) { %>
+                        <i class="fa-solid fa-star text-warning me-1"></i>
+                        <% } else { %>
+                          <i class="fa-regular fa-star text-secondary me-1"></i>
+                          <% } %>
+                            <% } %>
+                  </div>
+
+                  <% if (currentUser && review.author && review.author._id.equals(currentUser._id)) { %>
+                    <form method="POST" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE"
+                      class="ms-auto">
+                      <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <i class="fa-solid fa-trash-can"></i> Delete
+                      </button>
+                    </form>
+                    <% } %>
+                </div>
+
+                <p class="mb-0 text-muted">
+                  <%= review.comment %>
+                </p>
+                <small class="text-muted d-block fst-italic">
+                  Posted
+                  <% if (review.author && review.author.username) { %>
+                    by <strong>
+                      <%= review.author.username %>
+                    </strong>
+                    <% } else { %>
+                      by <strong>Anonymous</strong>
+                      <% } %>
+                        on <%= new Date(review.createdAt).toLocaleDateString() %>
+                </small>
+
+              </div>
+            </div>
+            <% }) %>
+
+        </div>
+        <% } else { %>
+          <div class="mt-5">
+            <p class="text-muted">No reviews yet. Be the first to leave one!</p>
+          </div>
+          <% } %>
+            <div class="mt-5">
+              <h4 class="fw-bold mb-3">Location on Map</h4>
+              <div id="map" style="height: 400px; border-radius: 10px;" class="shadow-sm"></div>
+            </div>
+
+
+            <script>
+              const stars = document.querySelectorAll("#star-rating .star");
+              const ratingInput = document.getElementById("rating");
+              const ratingFeedback = document.getElementById("rating-feedback");
+
+              stars.forEach((star) => {
+                star.addEventListener("mouseover", () => {
+                  highlightStars(star.dataset.value);
+                });
+
+                star.addEventListener("mouseout", () => {
+                  highlightStars(ratingInput.value);
+                });
+
+                star.addEventListener("click", () => {
+                  ratingInput.value = star.dataset.value;
+                  ratingInput.classList.remove("is-invalid");
+                  ratingFeedback.style.display = "none";
+                  highlightStars(ratingInput.value);
+                });
+              });
+
+              function highlightStars(rating) {
+                stars.forEach((star) => {
+                  star.classList.remove("selected");
+                  if (star.dataset.value <= rating) {
+                    star.classList.add("selected");
+                  }
+                });
+              }
+              document.addEventListener('DOMContentLoaded', function () {
+                const lat = "<%= listing.geometry.coordinates[1] %>";
+                const lon = "<%= listing.geometry.coordinates[0] %>";
+                const location = "<%= listing.location %>, <%= listing.country %>";
+
+                var map = L.map('map').setView([lat, lon], 13);
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  maxZoom: 19,
+                  attribution: '&copy; OpenStreetMap contributors'
+                }).addTo(map);
+
+                L.marker([lat, lon]).addTo(map)
+                  .bindPopup(location)
+                  .openPopup();
+              });
+            </script>
+
+  </body>
