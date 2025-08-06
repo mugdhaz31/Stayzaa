@@ -4,8 +4,6 @@ Stayzaa is a full-stack web application inspired by Airbnb, built with **Node.js
 
 
 
----c:\Users\mugdha zope\OneDrive\Pictures\Screenshots\Screenshot 2025-07-22 175644.png
-
 ## 🚀 Features
 
 - 🔐 **User Authentication** – Sign up, login, and logout functionality using Passport.js.
