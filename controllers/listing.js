@@ -54,8 +54,19 @@ module.exports.createListing = async (req, res, next) => {
   const fullLocation = `${location}, ${country}`;
 
   // Fetch coordinates from Nominatim
-  const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullLocation)}`);
-  const geoData = await geoResponse.json();
+  const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullLocation)}`, {
+  headers: {
+    'User-Agent': 'WanderlustApp/1.0 (your.email@example.com)'
+  }
+});
+
+if (!geoResponse.ok) {
+  console.error("Nominatim fetch error:", await geoResponse.text());
+  throw new Error("Failed to fetch geolocation data");
+}
+
+const geoData = await geoResponse.json();
+
 
   const newListing = new Listing(req.body.listing);
   newListing.Owner = req.user._id;
