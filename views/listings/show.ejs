@@ -48,7 +48,8 @@
           </p>
 
           <h5 class="fw-semibold mt-4">
-            ₹<%=listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> <small class="text-muted fw-normal">/ night</small>
+            ₹<%=listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> <small class="text-muted fw-normal">/
+                night</small>
           </h5>
 
           <% if(currentUser && listing.Owner._id.equals(currentUser._id)){ %>
@@ -193,20 +194,26 @@
                 });
               }
               document.addEventListener('DOMContentLoaded', function () {
-                const lat = "<%= listing.geometry.coordinates[1] %>";
-                const lon = "<%= listing.geometry.coordinates[0] %>";
+                const lat = parseFloat("<%= listing.geometry.coordinates[1] %>");
+                const lon = parseFloat("<%= listing.geometry.coordinates[0] %>");
                 const location = "<%= listing.location %>, <%= listing.country %>";
 
-                var map = L.map('map').setView([lat, lon], 13);
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                  maxZoom: 19,
-                  attribution: '&copy; OpenStreetMap contributors'
-                }).addTo(map);
+                if (!isNaN(lat) && !isNaN(lon)) {
+                  var map = L.map('map').setView([lat, lon], 13);
 
-                L.marker([lat, lon]).addTo(map)
-                  .bindPopup(location)
-                  .openPopup();
+                  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    maxZoom: 19,
+                    attribution: '&copy; OpenStreetMap contributors'
+                  }).addTo(map);
+
+                  L.marker([lat, lon]).addTo(map)
+                    .bindPopup(location)
+                    .openPopup();
+                } else {
+                  console.error("Invalid lat/lon for map:", lat, lon);
+                }
               });
+
             </script>
 
   </body>
