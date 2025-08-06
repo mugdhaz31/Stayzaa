@@ -107,24 +107,56 @@ module.exports.renderEditForm = async (req, res, next) => {
 
 module.exports.updateListing = async (req, res, next) => {
   const { id } = req.params;
+  const { location, country } = req.body.listing;
+  const fullLocation = `${location}, ${country}`;
+
+  // Fetch updated geolocation from Nominatim
+  const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullLocation)}`, {
+    headers: {
+      'User-Agent': 'WanderlustApp/1.0 (mugdha.zope123@example.com)' // update with your contact if needed
+    }
+  });
+
+  let geometry = { type: "Point", coordinates: [0, 0] }; // default
+
+  if (geoResponse.ok) {
+    const geoData = await geoResponse.json();
+    if (geoData && geoData.length > 0) {
+      geometry.coordinates = [
+        parseFloat(geoData[0].lon),
+        parseFloat(geoData[0].lat)
+      ];
+    }
+  } else {
+    console.error("Nominatim fetch error:", await geoResponse.text());
+  }
+
+  // Update listing fields
   const updated = await Listing.findByIdAndUpdate(id, {
     ...req.body.listing,
+    geometry
   });
+
+  // If image is updated
   if (typeof req.file !== "undefined") {
-    const url = req.file.path
-    const filename = req.file.filename
-    updated.image = { url, filename }
-    await updated.save()
+    const url = req.file.path;
+    const filename = req.file.filename;
+    updated.image = { url, filename };
   }
+
+  await updated.save();
+
   if (!updated) {
     return res.status(404).render("error", {
       statusCode: 404,
       message: "Listing not found for update",
     });
   }
-  req.flash("success", "Listing Updated !!")
+
+  req.flash("success", "Listing Updated !!");
   res.redirect(`/listings/${id}`);
-}
+};
+
 
 module.exports.destroyListing = async (req, res, next) => {
   let { id } = req.params;
