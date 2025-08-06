@@ -48,15 +48,15 @@ module.exports.showListing = async (req, res, next) => {
 const fetch = require("node-fetch");
 
 module.exports.createListing = async (req, res, next) => {
-  const url = req.file.path;
-  const filename = req.file.filename;
+  const url = req.file?.path || '';
+const filename = req.file?.filename || '';
   const { location, country } = req.body.listing;
   const fullLocation = `${location}, ${country}`;
 
   // Fetch coordinates from Nominatim
   const geoResponse = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(fullLocation)}`, {
   headers: {
-    'User-Agent': 'WanderlustApp/1.0 (your.email@example.com)'
+    'User-Agent': 'WanderlustApp/1.0 (mugdha.zope123@example.com)'
   }
 });
 

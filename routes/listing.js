@@ -26,8 +26,7 @@ router.get("/:id",wrapAsync(listingController.showListing)
 );
 
 //Create
-router.post("/",isloggedin,upload.single("listing[image][url]"), wrapAsync(listingController.createListing)
-);
+router.post("/", isloggedin, upload.single("image"), wrapAsync(listingController.createListing));
 
 // Edit
 router.get(

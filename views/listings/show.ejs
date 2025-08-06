@@ -48,7 +48,7 @@
           </p>
 
           <h5 class="fw-semibold mt-4">
-            ₹<%= listing.price.toLocaleString("en-IN") %> <small class="text-muted fw-normal">/ night</small>
+            ₹<%=listing.price ? listing.price.toLocaleString("en-IN") : "N/A" %> <small class="text-muted fw-normal">/ night</small>
           </h5>
 
           <% if(currentUser && listing.Owner._id.equals(currentUser._id)){ %>
